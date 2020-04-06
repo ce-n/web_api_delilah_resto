@@ -15,3 +15,5 @@ const connectionWithDbAndServerListening = async sq => {
 }
 
 connectionWithDbAndServerListening(sequelize)
+
+module.exports = sequelize
