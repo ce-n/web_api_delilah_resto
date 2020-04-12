@@ -1,9 +1,9 @@
 class Product {
-    constructor(name, pricePerUnit, imageURL, id = null) {
+    constructor(name, price_per_unit, image_url, id = null) {
         this.id = id
         this.name = name
-        this.pricePerUnit = pricePerUnit
-        this.imageURL = imageURL
+        this.price_per_unit = price_per_unit
+        this.image_url = image_url
     }
 }
 
