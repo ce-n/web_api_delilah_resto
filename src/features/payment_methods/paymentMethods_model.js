@@ -1,7 +1,7 @@
 class PaymentMethod {
-    constructor(paymentMethod, id = null) {
+    constructor(method, id = null) {
         this.id = id
-        this.paymentMethod = paymentMethod
+        this.method = method
     }
 }
 

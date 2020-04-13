@@ -1,22 +1,22 @@
 const express = require('express')
 const router = express.Router()
 const sequelize = require('../../dataBase_connection')
-const productQueries = require('./products_controller')
+const paymentMethodsQueries = require('./paymentMethods_controller')
 
 router
     .route('/')
     .get(async(req, res) => {
-        const products = await productQueries.getAllProducts(sequelize)
-        console.log(products)
-        res.send(products)
+        const payment_methods = await paymentMethodsQueries.getAllPaymentMethod(sequelize)
+        console.log(payment_methods)
+        res.send(payment_methods)
     })
     .post(async(req, res) => {
         try {
-            const product = req.body
-            await productQueries.insertNewProduct(sequelize, product)
-            res.status(201).json({ message: 'Successful operation. Product created' })
+            const payment_method = req.body
+            await paymentMethodsQueries.insertNewPaymentMethod(sequelize, payment_method)
+            res.status(201).json({ message: 'Successful operation. Payment method created' })
         } catch (error) {
-            res.status(500).json({ message: error })
+            res.status(500).json({ error: errorMessage, message: error })
         }
     })
 
@@ -27,12 +27,12 @@ router
 
         if (!isNaN(id)) {
             try {
-                const productData = req.body
-                if (Object.entries(productData).length === 0) {
+                const paymentMethodData = req.body
+                if (Object.entries(paymentMethodData).length === 0) {
                     res.sendStatus(400)
                 } else {
-                    await productQueries.updateProductById(sequelize, id, productData)
-                    res.status(200).json({ message: 'Product updated', product: productData })
+                    await paymentMethodsQueries.updatePaymentMethodById(sequelize, id, paymentMethodData)
+                    res.status(200).json({ message: 'Payment method updated', payment_method: paymentMethodData })
                 }
 
             } catch (error) {
@@ -48,8 +48,8 @@ router
         const id = parseInt(req.params.id)
         if (!isNaN(id)) {
             try {
-                await productQueries.deleteProductById(sequelize, id)
-                res.status(200).json({ message: 'The product has been deleted' })
+                await paymentMethodsQueries.deletePaymentMethodById(sequelize, id)
+                res.status(200).json({ message: 'The payment method has been deleted' })
             } catch (error) {
                 res.status(500).json({ message: error })
             }

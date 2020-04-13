@@ -46,7 +46,6 @@ const querysProductTable = {
 
     }
 
-
 }
 
 module.exports = querysProductTable
