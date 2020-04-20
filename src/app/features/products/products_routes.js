@@ -14,8 +14,9 @@ router
     .post(userVerfication.adminAuthentication, async(req, res) => {
         try {
             const product = req.body
-            await productQueries.insertNewProduct(sequelize, product)
-            res.status(201).json({ message: 'Successful operation. Product created' })
+            const insert_product_response = await productQueries.insertNewProduct(sequelize, product)
+            const product_id = insert_product_response
+            res.status(201).json({ message: 'Successful operation. Product created', product_id: product_id })
         } catch (error) {
             res.status(500).json({ message: error })
         }

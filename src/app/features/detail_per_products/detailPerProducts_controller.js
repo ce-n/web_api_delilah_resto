@@ -11,22 +11,21 @@ const detailPerProductsTableQueries = {
         }
     },
 
-    insertNewDetailPerProduct: async(sequelize, { product_id, detail_order_id, number_of_unit }) => {
+    insertNewDetailPerProduct: async(sequelize, { product_id, detail_order_id, number_of_unit, price_per_unit }) => {
         try {
 
-            //const subtotal = number_of_unit * price_per_unit
-            console.log('el DETAIL ORDER ID que recibo es ' + detail_order_id)
+            const subtotal = number_of_unit * price_per_unit
 
-            const detail_per_product = new DetailPerProduct(product_id, detail_order_id, number_of_unit)
+            const detail_per_product = new DetailPerProduct(product_id, detail_order_id, number_of_unit, subtotal)
 
-            const query = 'INSERT INTO detail_per_product (product_id, detail_order_id, number_of_unit, subtotal) VALUES (?, ?, ?, null)'
+            const query = 'INSERT INTO detail_per_product (product_id, detail_order_id, number_of_unit, subtotal) VALUES (?, ?, ?, ?)'
             const response = await sequelize.query(query, {
                 type: sequelize.QueryTypes.INSERT,
-                replacements: [detail_per_product.product_id, detail_per_product.detail_order_id, detail_per_product.number_of_unit]
+                replacements: [detail_per_product.product_id, detail_per_product.detail_order_id, detail_per_product.number_of_unit, detail_per_product.subtotal]
             })
 
             const lastInsertID = response[0]
-            console.log('The id of the last record is: ' + lastInsertID)
+            console.log('The detail_per_product_id of the last record is: ' + lastInsertID)
             return lastInsertID
 
         } catch (error) {

@@ -20,7 +20,7 @@ const detailOrdersTableQueries = {
                 replacements: [detail_order.client_order_id]
             })
             const lastInsertID = response[0]
-            console.log('The id of the last record is: ' + lastInsertID)
+            console.log('The deatil_order_id of the last record is: ' + lastInsertID)
             return lastInsertID
 
         } catch (error) {

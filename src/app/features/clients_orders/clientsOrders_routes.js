@@ -7,34 +7,45 @@ const userVerfication = require('../../middleware/authentication')
 router
     .route('/')
     .get(userVerfication.adminAuthentication, async(req, res) => {
-        const clientOrder = await clientOrderQueries.getAllClientsOrders(sequelize)
-        console.log(clientOrder)
-        res.send(clientOrder)
+        const client_order = await clientOrderQueries.getAllClientsOrders(sequelize)
+
+        res.status(200).json({
+            message: 'Successful operation',
+            all_users_orders: client_order
+        })
+
     })
     .post(async(req, res) => {
         try {
-            const headerAuthorization = req.headers.authorization
-            const tokenData = userVerfication.getUserDataFromToken(headerAuthorization)
-                // console.log(tokenData.userID)
+            const header_authorization = req.headers.authorization
 
-            const userID = tokenData.userID
-            const bodyData = req.body
-                // console.log('la info del body es ' + bodyData.hour)
-
-            const clientOrderData = {
-                hour: bodyData.hour,
-                user_id: userID,
-                status_id: bodyData.status_id,
-                payment_id: bodyData.payment_id,
-                product_id: bodyData.product_id,
-                number_of_unit: bodyData.number_of_unit
+            if (!header_authorization) {
+                return res.status(402).send({ error: 'Bad request', message: 'Header information is missing' })
             }
 
-            const response = await clientOrderQueries.insertNewClientOrder(sequelize, clientOrderData)
-            res.status(201).json({
-                message: 'Successful operation. Order created',
-                client_order_id: response
-            })
+            const token_data = userVerfication.getUserDataFromToken(header_authorization)
+            const user_id = token_data.userID
+            const body_data = req.body
+
+            const client_order_data = {
+                hour: body_data.hour,
+                user_id: user_id,
+                status_id: body_data.status_id,
+                payment_id: body_data.payment_id,
+                product_id: body_data.product_id,
+                number_of_unit: body_data.number_of_unit
+            }
+
+            const response = await clientOrderQueries.insertNewClientOrder(sequelize, client_order_data)
+            if (response) {
+                res.status(201).json({
+                    message: 'Successful operation. Order created',
+                    client_order_information: response
+                })
+
+            } else {
+                return res.status(402).send({ error: 'Bad request', message: 'Body information is missing' })
+            }
 
         } catch (error) {
             res.status(500).json({ message: 'Error en el server' })
@@ -43,17 +54,17 @@ router
 
 router
     .route('/:id')
-    .put(async(req, res) => {
+    .put(userVerfication.adminAuthentication, async(req, res) => {
         const id = parseInt(req.params.id)
 
         if (!isNaN(id)) {
             try {
-                const clientOrderData = req.body
-                if (Object.entries(clientOrderData).length === 0) {
+                const client_order_data = req.body
+                if (Object.entries(client_order_data).length === 0) {
                     res.sendStatus(400)
                 } else {
-                    await clientOrderQueries.updateClientOrderById(sequelize, id, clientOrderData)
-                    res.status(200).json({ message: 'Order updated', client_order: clientOrderData })
+                    await clientOrderQueries.updateClientOrderById(sequelize, id, client_order_data)
+                    res.status(200).json({ message: 'Order updated', client_order: client_order_data })
                 }
 
             } catch (error) {
@@ -65,7 +76,7 @@ router
         }
 
     })
-    .delete(async(req, res) => {
+    .delete(userVerfication.adminAuthentication, async(req, res) => {
         const id = parseInt(req.params.id)
         if (!isNaN(id)) {
             try {
@@ -103,7 +114,7 @@ router
     })
 router
     .route('/detail/:id')
-    .get(async(req, res) => {
+    .get(userVerfication.adminAuthentication, async(req, res) => {
         const id = parseInt(req.params.id)
 
         if (!isNaN(id)) {

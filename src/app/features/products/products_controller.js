@@ -31,9 +31,13 @@ const querysProductTable = {
         try {
             const product = new Product(name, price_per_unit, image_url)
             const query = 'INSERT INTO product (name, price_per_unit, image_url) VALUES (?, ?, ?)'
-            await sequelize.query(query, {
+            const insert_response = await sequelize.query(query, {
+                type: sequelize.QueryTypes.INSERT,
                 replacements: [product.name, product.price_per_unit, product.image_url]
             })
+            const last_insert_ID = insert_response[0]
+            console.log('The product_id of the last record is: ' + last_insert_ID)
+            return last_insert_ID
 
         } catch (error) {
             console.log(error)
