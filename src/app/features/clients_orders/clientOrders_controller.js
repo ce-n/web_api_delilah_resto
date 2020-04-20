@@ -1,4 +1,8 @@
 const ClientOrder = require('./clientOrders_model')
+const DetailOrderModel = require('./../detail_orders/detailOrders_model')
+const detailOrderController = require('./../detail_orders/detailOrders_controller')
+const DetailPerProductModel = require('./../detail_per_products/detailPerProducts_model')
+const detailPerProductController = require('./../detail_per_products/detailPerProducts_controller')
 
 const clientesOrdersTableQueries = {
 
@@ -98,7 +102,7 @@ const clientesOrdersTableQueries = {
         }
     },
 
-    insertNewClientOrder: async(sequelize, { hour, user_id, status_id, payment_id }) => {
+    insertNewClientOrder: async(sequelize, { hour, user_id, status_id, payment_id, product_id, number_of_unit }) => {
         try {
             const clientOrder = new ClientOrder(hour, user_id, status_id, payment_id)
             const query = 'INSERT INTO client_order (hour, user_id, status_id, payment_id) VALUES (?, ?, ?,?)'
@@ -107,9 +111,17 @@ const clientesOrdersTableQueries = {
                 replacements: [clientOrder.hour, clientOrder.user_id, clientOrder.status_id, clientOrder.payment_id]
             })
 
-            const lastInsertID = response[0]
-            console.log('The id of the last record is: ' + lastInsertID)
-            return lastInsertID
+            const clientOrderID = response[0]
+            console.log('The id of the last record is: ' + clientOrderID)
+
+            const detailOrderResponse = await detailOrderController.insertNewDetailtOrder(sequelize, clientOrderID)
+            const detail_order_id = detailOrderResponse
+            console.log('LA RESPUESTA DE INSERTnEWdETAILoRDER ' + detailOrderResponse)
+            console.log('LA ID QUE DEVUELVE EL INSERT EN DETAIL ORDER ' + detail_order_id)
+
+            const detailPerProductID = await detailPerProductController.insertNewDetailPerProduct(sequelize, { product_id, detail_order_id, number_of_unit })
+            return { clientOrderID, detail_order_id, detailPerProductID }
+            //return clientOrderID
 
         } catch (error) {
             return console.log('Error message: ' + error)

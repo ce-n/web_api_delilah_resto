@@ -14,14 +14,13 @@ const detailPerProductRoutes = require('./features/detail_per_products/detailPer
 
 app.use(express.json())
 app.use('/user', userRoutes)
+app.use('/products', productsRoutes)
+app.use('/orders', clientOrderRoutes)
 app.use(authentication.adminAuthentication)
 app.use('/users', usersRoutes)
-app.use(authentication.userAuthentication)
-app.use('/products', productsRoutes)
 app.use('/status', statusRoutes)
 app.use('/paymentmethod', paymentMethodRoutes)
 app.use('/favourite', favouriteRoutes)
-app.use('/orders', clientOrderRoutes)
 app.use('/detailorder', detailOrdersRoutes)
 app.use('/detailperproduct', detailPerProductRoutes)
 

@@ -11,7 +11,7 @@ const detailOrdersTableQueries = {
         }
     },
 
-    insertNewDetailtOrder: async(sequelize, { client_order_id }) => {
+    insertNewDetailtOrder: async(sequelize, client_order_id) => {
         try {
             const detail_order = new DetailOrder(client_order_id)
             const query = 'INSERT INTO detail_order (client_order_id) VALUES (?)'

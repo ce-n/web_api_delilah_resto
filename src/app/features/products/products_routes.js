@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const sequelize = require('../../database/dataBase_connection')
 const productQueries = require('./products_controller')
+const userVerfication = require('../../middleware/authentication')
 
 router
     .route('/')
@@ -10,7 +11,7 @@ router
         console.log(products)
         res.send(products)
     })
-    .post(async(req, res) => {
+    .post(userVerfication.adminAuthentication, async(req, res) => {
         try {
             const product = req.body
             await productQueries.insertNewProduct(sequelize, product)
@@ -22,7 +23,7 @@ router
 
 router
     .route('/:id')
-    .put(async(req, res) => {
+    .put(userVerfication.adminAuthentication, async(req, res) => {
         const id = parseInt(req.params.id)
 
         if (!isNaN(id)) {
@@ -44,7 +45,7 @@ router
         }
 
     })
-    .delete(async(req, res) => {
+    .delete(userVerfication.adminAuthentication, async(req, res) => {
         const id = parseInt(req.params.id)
         if (!isNaN(id)) {
             try {
