@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const sequelize = require('../../app/database/dataBase_connection')
+const sequelize = require('../../database/dataBase_connection')
 const statusQueries = require('./status_controller')
 
 router

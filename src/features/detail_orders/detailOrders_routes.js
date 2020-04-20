@@ -1,20 +1,23 @@
 const express = require('express')
 const router = express.Router()
 const sequelize = require('../../app/database/dataBase_connection')
-const productQueries = require('./products_controller')
+const detailtOrderQueries = require('./detailOrders_controller')
 
 router
     .route('/')
     .get(async(req, res) => {
-        const products = await productQueries.getAllProducts(sequelize)
-        console.log(products)
-        res.send(products)
+        const detailOrder = await detailtOrderQueries.getAllDetailOrders(sequelize)
+        console.log(detailOrder)
+        res.send(detailOrder)
     })
     .post(async(req, res) => {
         try {
-            const product = req.body
-            await productQueries.insertNewProduct(sequelize, product)
-            res.status(201).json({ message: 'Successful operation. Product created' })
+            const clientOrderId = req.body
+            const response = await detailtOrderQueries.insertNewDetailtOrder(sequelize, clientOrderId)
+            res.status(201).json({
+                message: 'Successful operation. Detail order created',
+                detail_order_id: response
+            })
         } catch (error) {
             res.status(500).json({ message: error })
         }
@@ -27,12 +30,12 @@ router
 
         if (!isNaN(id)) {
             try {
-                const productData = req.body
-                if (Object.entries(productData).length === 0) {
+                const detailOrderData = req.body.client_order_id
+                if (detailOrderData.length === 0) {
                     res.sendStatus(400)
                 } else {
-                    await productQueries.updateProductById(sequelize, id, productData)
-                    res.status(200).json({ message: 'Product updated', product: productData })
+                    await detailtOrderQueries.updateDetailOrderById(sequelize, id, detailOrderData)
+                    res.status(200).json({ message: 'Detail order updated', detailOrder: detailOrderData })
                 }
 
             } catch (error) {
@@ -48,8 +51,8 @@ router
         const id = parseInt(req.params.id)
         if (!isNaN(id)) {
             try {
-                await productQueries.deleteProductById(sequelize, id)
-                res.status(200).json({ message: 'The product has been deleted' })
+                await detailtOrderQueries.deleteDetailOrderById(sequelize, id)
+                res.status(200).json({ message: 'The detail order has been deleted' })
             } catch (error) {
                 res.status(500).json({ message: error })
             }

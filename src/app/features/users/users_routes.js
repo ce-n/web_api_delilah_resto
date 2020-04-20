@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const sequelize = require('../../app/database/dataBase_connection')
+const sequelize = require('../../database/dataBase_connection')
 const userQueries = require('./users_controller')
 
 const errorMessage = 'Something went wrong. Please retry or contact with an admin.'
@@ -17,37 +17,37 @@ router
         }
 
     })
-    .post(async(req, res) => {
-        try {
-            const user = req.body
-            await userQueries.insertNewUser(sequelize, user)
-            res.status(201).json({ message: 'Successful operation. User created' })
-        } catch (error) {
-            res.status(500).json({ error: errorMessage, message: error })
-        }
-    })
+    // .post(async(req, res) => {
+    //     try {
+    //         const user = req.body
+    //         await userQueries.insertNewUser(sequelize, user)
+    //         res.status(201).json({ message: 'Successful operation. User created' })
+    //     } catch (error) {
+    //         res.status(500).json({ error: errorMessage, message: error })
+    //     }
+    // })
 
-router
-    .route('/login')
-    .post(async(req, res) => {
-        const { username, password } = req.body
+// router
+//     .route('/login')
+//     .post(async(req, res) => {
+//         const { username, password } = req.body
 
-        if (!username || !password) {
-            return res.status(402).send({ error: 'Bad request', message: 'Password or username is missing' })
-        }
+//         if (!username || !password) {
+//             return res.status(402).send({ error: 'Bad request', message: 'Password or username is missing' })
+//         }
 
-        try {
-            const token = await userQueries.userLogin(sequelize, username, password)
-            if (token.length) {
-                return res.status(200).json({ message: 'User logged in succefully', token: token })
-            } else {
-                return res.status(404).json({ message: 'There is not match with user or passwors' })
-            }
+//         try {
+//             const token = await userQueries.userLogin(sequelize, username, password)
+//             if (token.length) {
+//                 return res.status(200).json({ message: 'User logged in succefully', token: token })
+//             } else {
+//                 return res.status(404).json({ message: 'There is not match with user or passwors' })
+//             }
 
-        } catch (error) {
-            res.status(500).json({ error: error, message: 'Something went wrong. Please try again' })
-        }
-    })
+//         } catch (error) {
+//             res.status(500).json({ error: error, message: 'Something went wrong. Please try again' })
+//         }
+//     })
 
 router
     .route('/:id')

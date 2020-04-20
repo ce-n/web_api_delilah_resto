@@ -8,7 +8,23 @@ const querysProductTable = {
             return products
         } catch (error) {
             console.log('EL ERROR ES: ' + error)
+            return error
         }
+    },
+
+    getProductPricePerUnitById: async(sequelize, id) => {
+        try {
+            const product_price_query = 'SELECT price_per_unit FROM product WHERE id = ?'
+            const product_price = await sequelize.query(product_price_query, {
+                type: sequelize.QueryTypes.SELECT,
+                replacements: [id]
+            })
+            return product_price
+
+        } catch (error) {
+            return console.log('Error message: ' + error)
+        }
+
     },
 
     insertNewProduct: async(sequelize, { name, price_per_unit, image_url }) => {
@@ -31,7 +47,7 @@ const querysProductTable = {
                 await sequelize.query(query, { replacements: [productData[property], id] })
             }
         } catch (error) {
-            console.log(error)
+            return console.log(error)
         }
     },
 

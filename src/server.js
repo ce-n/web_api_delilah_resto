@@ -1,6 +1,6 @@
-const app = require('./app')
+const app = require('./app/app')
 const config = require('./config/config')
-const sequelize = require('./dataBase_connection')
+const sequelize = require('../src/app/database/dataBase_connection')
 
 const connectionWithDbAndServerListening = async sq => {
     try {

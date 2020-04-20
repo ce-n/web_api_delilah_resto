@@ -1,0 +1,28 @@
+const express = require('express')
+const app = express()
+
+const authentication = require('./middleware/authentication')
+const productsRoutes = require('./features/products/products_routes')
+const usersRoutes = require('./features/users/users_routes')
+const userRoutes = require('./features/users/user_routes')
+const statusRoutes = require('./features/status/status_routes')
+const paymentMethodRoutes = require('./features/payment_methods/paymentMethods_routes')
+const favouriteRoutes = require('./features/favourites/favourites_routes')
+const clientOrderRoutes = require('./features/clients_orders/clientsOrders_routes')
+const detailOrdersRoutes = require('./features/detail_orders/detailOrders_routes')
+const detailPerProductRoutes = require('./features/detail_per_products/detailPerProducts_routes')
+
+app.use(express.json())
+app.use('/user', userRoutes)
+app.use(authentication.adminAuthentication)
+app.use('/users', usersRoutes)
+app.use(authentication.userAuthentication)
+app.use('/products', productsRoutes)
+app.use('/status', statusRoutes)
+app.use('/paymentmethod', paymentMethodRoutes)
+app.use('/favourite', favouriteRoutes)
+app.use('/orders', clientOrderRoutes)
+app.use('/detailorder', detailOrdersRoutes)
+app.use('/detailperproduct', detailPerProductRoutes)
+
+module.exports = app
