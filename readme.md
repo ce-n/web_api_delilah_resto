@@ -23,7 +23,7 @@ Una vez que tengas la copia local del proyecto, deberás acceder a la carpeta
 Allí encontrarás un script en el que podrás setear las distintas propiedades que tendrá tanto la base de datos, como el servidor y la firma necesaria para generar tokens.
 
 ### **Crear Base de Datos**
-Desde la carpeta database (*proyecto/src/app/database*) podrás acceder a un script **database.sql**  que te permitirá generar una base de datos.  
+Desde la carpeta database (*proyecto/src/app/database*) podrás acceder a un script **DB_delilah_resto.sql**  que te permitirá generar una base de datos.  
   
 ## Inicializar 
 
