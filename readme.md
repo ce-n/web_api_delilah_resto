@@ -5,15 +5,34 @@ El objetivo de esta API es permitir la administración de pedidos hechos por usu
 
 1. Cómo comenzar
 2. Prerrequisitos
-3. Instalación
-4. Inicializar 
-5. Funcionamiento
+3. Estructura de carpetas
+4. Instalación
+5. Inicializar 
+6. Funcionamiento
 
 ## Cómo comenzar
 Las siguientes instrucciones te permitirán ejecutar el proyecto en un entorno local.
 
 ## Prerrequisitos
 En primer lugar debes descargar Node JS en tu computadora (https://nodejs.org/es/). Una vez que lo tengas instalado podrás levantar el servidor desde una consola.
+
+## Estructura de carpetas
+A continuación se presenta la estructura de carpetas. Cada una contiene los archivos necesarios para el funcionamiento de la API.
+
+- **src**
+    - **app**
+        - database
+        - features
+            - client_orders
+            - detail_orders
+            - detail_per_products
+            - favourites
+            - payment_methods
+            - status
+            - users
+        - middleware
+    - **config**
+
 
 ## Instalación
 Una vez que tengas la copia local del proyecto, deberás acceder a la carpeta
